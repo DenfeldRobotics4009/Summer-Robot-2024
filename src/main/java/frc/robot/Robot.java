@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -18,6 +20,14 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  
+
+    private final PWMSparkMax frontLeftMax = new PWMSparkMax(0);
+    private final PWMSparkMax frontRightMax = new PWMSparkMax(1);
+    private final PWMSparkMax backLeftMax = new PWMSparkMax(2);
+    private final PWMSparkMax backRightMax = new PWMSparkMax(3);
+
+  XboxController controller = new XboxController(0);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -81,8 +91,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
-
+  public void teleopPeriodic() {
+    frontLeftMax.set(controller.getLeftY());
+    frontRightMax.set(controller.getRightY());
+  }
+    
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.

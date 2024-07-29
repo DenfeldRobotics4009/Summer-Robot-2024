@@ -29,18 +29,6 @@ public class RobotContainer {
 
   private final DriveTrain drive = new DriveTrain();
 
-    // TODO: find actual spark max channels
-    private final PWMSparkMax frontLeftMax = new PWMSparkMax(0);
-    private final PWMSparkMax frontRightMax = new PWMSparkMax(1);
-    private final PWMSparkMax backLeftMax = new PWMSparkMax(2);
-    private final PWMSparkMax backRightMax = new PWMSparkMax(3);
-    private final DifferentialDrive robotDrive = new DifferentialDrive(frontLeftMax, backLeftMax);
-
-    public void DriveTrain() {
-      backLeftMax.addFollower(frontLeftMax);
-      backRightMax.addFollower(frontRightMax);
-    }
-
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
