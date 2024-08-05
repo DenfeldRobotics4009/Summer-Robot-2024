@@ -22,13 +22,6 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   
 
-    private final PWMSparkMax frontLeftMax = new PWMSparkMax(0);
-    private final PWMSparkMax frontRightMax = new PWMSparkMax(1);
-    private final PWMSparkMax backLeftMax = new PWMSparkMax(2);
-    private final PWMSparkMax backRightMax = new PWMSparkMax(3);
-
-  XboxController controller = new XboxController(0);
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -92,8 +85,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    frontLeftMax.set(controller.getLeftY());
-    frontRightMax.set(controller.getRightY());
+
   }
     
   @Override
