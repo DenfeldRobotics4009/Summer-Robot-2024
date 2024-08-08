@@ -22,9 +22,6 @@ public class Controls {
     public boolean setTurn() {
         return drive.getRawButton(7);
     }
-    public boolean setTwist() {
-        return drive.getRawButton(8);
-    }
 
     static double deadBand(double raw, double deadband) {
 

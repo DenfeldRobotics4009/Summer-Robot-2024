@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveTrain extends SubsystemBase {
 
   CANSparkMax 
-    left1 = new CANSparkMax(1, MotorType.kBrushless),
-    left2 = new CANSparkMax(2, MotorType.kBrushless),
-    right1 = new CANSparkMax(3, MotorType.kBrushless),
-    right2 = new CANSparkMax(4, MotorType.kBrushless);
+    left1 = new CANSparkMax(10, MotorType.kBrushless),
+    left2 = new CANSparkMax(21, MotorType.kBrushless),
+    right1 = new CANSparkMax(33, MotorType.kBrushless),
+    right2 = new CANSparkMax(19, MotorType.kBrushless);
   
   RelativeEncoder[] encoderArr = {left1.getEncoder(), right1.getEncoder()};
 
@@ -31,13 +31,13 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
-  public void drive(double Forward, double Twist) {
+  public void drive(double Forward) {
 
-    left1.set(clamp(Forward + Twist, -1, 1));
-    left2.set(clamp(Forward + Twist, -1, 1));
+    left1.set(clamp(Forward, -1, 1));
+    left2.set(clamp(Forward, -1, 1));
 
-    right1.set(-clamp(Forward - Twist, -1, 1));
-    right2.set(-clamp(Forward - Twist, -1, 1));
+    right1.set(-clamp(Forward, -1, 1));
+    right2.set(-clamp(Forward, -1, 1));
   
     
   }
