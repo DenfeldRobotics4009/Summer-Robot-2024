@@ -16,12 +16,6 @@ public class Controls {
     public double getTurn() {
         return deadBand(drive.getLeftX(), 0.15);
     }
-    public boolean getPrescisionMode() {
-        return drive.getRightBumper();
-    }
-    public boolean setTurn() {
-        return drive.getRawButton(7);
-    }
 
     static double deadBand(double raw, double deadband) {
 
