@@ -13,6 +13,13 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class util{
+    public static double clamp(double in, double min, double max) {
+      if (in >= max) {return max;}
+      else if (in <= min) {return min;}
+      return in;
+    }
+  }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
