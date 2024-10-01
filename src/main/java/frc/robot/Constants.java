@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
 
 public static final class Elevator {
-  public static double maxHeight = 1.73;
+  public static double maxHeight = 12.572;
 
   public static double motorP = 0.00045;
   public static double motorI = 0;

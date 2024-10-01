@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -17,48 +17,75 @@ import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
 
-  public enum elevatorPosition {
-    BOTTOM (0),
-    TOP (Constants.Elevator.maxHeight);
+  static Elevator instance;
 
-    private double position;
-
-    private elevatorPosition(double position) {
-      this.position = position;
+  /**
+   * @return singleton instance of Intake
+   */
+  public static Elevator getInstance() {
+    if (instance == null) {
+      instance = new Elevator();
     }
 
-    public double get() {
-      return position;
-    }
+    return instance;
   }
  
   CANSparkMax motor1 = new CANSparkMax(1, MotorType.kBrushless);
   CANSparkMax motor2 = new CANSparkMax(2, MotorType.kBrushless);
-  SparkPIDController motorPidController = motor1.getPIDController();
-  
-  AbsoluteEncoder[] encoderArr = {motor1.getEncoder(), motor2.getEncoder()};
+
+  RelativeEncoder motor1Encoder = motor1.getEncoder();
+  RelativeEncoder motor2Encoder = motor2.getEncoder();
 
   private PIDController movePidController = new PIDController (.012, 0, 0.001);
 
   public Elevator() {
-    movePidController.setTolerance(Constants.Elevator.pidTolerance);
     motor1.getEncoder().setPosition(0);
+    motor2.getEncoder().setPosition(0);
+
+    motor1.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Elevator.maxHeight);
+    motor1.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Elevator.maxHeight);
+    motor1.enableSoftLimit(SoftLimitDirection.kForward, true);
+    motor1.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    motor2.setSoftLimit(SoftLimitDirection.kReverse, (float)-Constants.Elevator.maxHeight);
+    motor2.setSoftLimit(SoftLimitDirection.kForward, (float)-Constants.Elevator.maxHeight);
+    motor2.enableSoftLimit(SoftLimitDirection.kForward, true);
+    motor2.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    movePidController.setTolerance(Constants.Elevator.pidTolerance);
   }
   
   @Override
   public void periodic() {
 
-    double speed = movePidController.calculate(motor1.getEncoder().getPosition()*2*Math.PI);
+    double speed = movePidController.calculate(motor1.getEncoder().getPosition());
     MathUtil.clamp(speed, -1, 1);
-    motor1.set(speed);
-    motor2.getEncoder().setPosition(-motor1.getEncoder().getPosition());
-  }
-
-  void move() {
+    //use your set speed funtion!
+    movePidController.setSetpoint(speed);
 
   }
 
-  void stopMove() {
+  public void topPosition (double targetPosition) {
+    if (targetPosition == Constants.Elevator.maxHeight) {
+      motor1.set(1);
+      motor2.set(-1);
+    }
+  }
 
+  public void bottomPosition (double targetPosition) {
+    if (targetPosition == 0) {
+      motor1.getEncoder().setPosition(0);
+      motor2.getEncoder().setPosition(0);
+    }
+  }
+
+  public void moveUp(double power) {
+    motor1.set(power);
+    motor2.set(-power);
+  }
+
+  public void stopMove() {
+    motor1.set(0);
+    motor2.set(0);
   }
 }
