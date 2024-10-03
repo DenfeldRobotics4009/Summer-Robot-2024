@@ -23,4 +23,9 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  public static class Turret {
+    public static final double feederSpeed = 0.42;
+    public static final double reverseFeederSpeed = -0.42;
+    public static final double staticMotor = 0;
+  }
 }
