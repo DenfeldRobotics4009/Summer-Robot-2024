@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -36,7 +35,7 @@ public class Elevator extends SubsystemBase {
   RelativeEncoder motor1Encoder = motor1.getEncoder();
   RelativeEncoder motor2Encoder = motor2.getEncoder();
 
-  private PIDController movePidController = new PIDController (.012, 0, 0.001);
+  private PIDController movePidController = new PIDController(.012, 0, 0.001);
 
   public Elevator() {
     motor1.getEncoder().setPosition(0);
@@ -61,7 +60,7 @@ public class Elevator extends SubsystemBase {
     double speed = movePidController.calculate(motor1.getEncoder().getPosition());
     MathUtil.clamp(speed, -1, 1);
     //use your set speed funtion!
-    movePidController.setSetpoint(speed);
+    movePidController.setSetpoint();
 
   }
 
@@ -74,14 +73,16 @@ public class Elevator extends SubsystemBase {
 
   public void bottomPosition (double targetPosition) {
     if (targetPosition == 0) {
-      motor1.getEncoder().setPosition(0);
-      motor2.getEncoder().setPosition(0);
+      motor1.set(-1);
+      motor2.set(-1);
     }
   }
 
-  public void moveUp(double power) {
-    motor1.set(power);
-    motor2.set(-power);
+  public void move(double power) {
+    if (motor1.getEncoder().getPosition() <= Constants.Elevator.maxHeight && motor1.getEncoder().getPosition() >= 0){
+      motor1.set(power);
+      motor2.set(-power);
+    }
   }
 
   public void stopMove() {
